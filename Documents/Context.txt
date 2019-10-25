@@ -1,21 +1,14 @@
 Contexte
 --------
 
-Faire un petit jeu de labyrinthe qui :
+Améliorer le petit jeu de labyrinthe :
 
-1) Dit bonjour au joueur
-2) Lui demande son nom
-3) Si le nom est saisi, lui affiche un message de bienvenue
-4) Sinon retourne en 4
-5) Lit un fichier texte contenant le dessin du labyrinthe (par exemple de 15x15 cases avec des X pour les murs, des espaces pour les couloirs, un E pour l'entrée et un S pour la sortie)
-6) Charge les données du labyrinthe dans une matrice (liste à 2 dimensions), chaque élément de cette matrice contient le contenu du labyrinthe à une coordonnée précise (y/ligne, x/colonne)
-7) Place le personnage à l'entrée du labyrinthe
-8) Trace à l'écran (en mode console) le labyrinthe
-9) Demande au joueur de saisir une touche pour effectuer une action (se déplacer en haut, en bas, à gauche, à droite ou quitter)
-10) Si le joueur saisi l'une de ces touches on déplace le personnage dans la direction choisie (sauf s'il se cogne contre un mur ou si il sort du cadre du labyrinthe)
-11) Si le joueur arrive sur la sortie, affiche un message de victoire puis arrête le programme
-12) Si le joueur arrive sur la sortie, affiche un message de victoire puis arrête le programme
-13) Sinon met à jour l'affichage du labyrinthe avec le personnage et revient en 9
+1) Ajouter des objets à trouver dans le labyrinthe
+2) Placer les objets aléatoirement dans le labyrinthe en début de partie
+3) Ajouter un inventaire pour le personnage
+4) Donner au personnage la possibilité de ramasser les objets du labyrinthe
+5) Créer une condition de sortie pour le personnage avec une combinaison d'objets
+
 
 Consignes :
 - Tous les nommages (méthodes, propriétés, variables, classes, etc.) doivent être en anglais

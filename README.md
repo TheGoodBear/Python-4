@@ -1,19 +1,12 @@
-# Formation Python étape 3
+# Formation Python étape 4
+
+    Jeu du labyrinthe V2
 
     Notions abordées :
-    
-    - Spécifications :
-        - Compéhension d'un contexte
-        - Diagramme de flux
-      
-    - Architecture logicielle
-        - Tous le code dans des méthodes excepté la trame principale
 
     - Langage :
-        - Import de modules (sys, random)
-        - Variables : typage explicite
-        - Ouverture et lecture d'un fichier texte
-        - Listes à 1 et 2 dimensions (tableau)
+        - Modules (random)
+        - Diverses manières de parcourir/exploiter des listes
         - Générateur de nombre aléatoire
         - Gestion des erreurs/exceptions (try/except)
 
