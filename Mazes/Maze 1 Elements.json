@@ -1,10 +1,98 @@
 [
     {
-        "title": "And Now for Something Completely Different",
-        "year": 1971
+        "Name": "Ground",
+        "Symbol": " ",
+        "Image": " ",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Walk"]
     },
     {
-        "title": "Monty Python and the Holy Grail",
-        "year": 1975
+        "Name": "Mur",
+        "Symbol": "*",
+        "Image": "■",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Block"]
+    },
+    {
+        "Name": "Entrée",
+        "Symbol": "E",
+        "Image": " ",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Walk"]
+    },
+    {
+        "Name": "Sortie",
+        "Symbol": "X",
+        "Image": "+",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Walk"]
+    },
+    {
+        "Name": "Statue de Dragon",
+        "Symbol": "",
+        "Image": "1",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue de Poisson",
+        "Symbol": "",
+        "Image": "2",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue d'Oiseau",
+        "Symbol": "",
+        "Image": "3",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue de Buffle",
+        "Symbol": "",
+        "Image": "4",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Miroir",
+        "Symbol": "",
+        "Image": "5",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Clé dorée",
+        "Symbol": "",
+        "Image": "6",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Clé argentée",
+        "Symbol": "",
+        "Image": "7",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Bouteille",
+        "Symbol": "",
+        "Image": "8",
+        "X": 0,
+        "Y": 0,
+        "Behavior": ["Pick"]
     }
 ]

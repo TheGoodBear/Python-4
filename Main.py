@@ -3,6 +3,7 @@
 # Imports of modules
 # ------------------
 import sys
+import json
 
 
 # Variables (must be declared BEFORE using them)
@@ -15,7 +16,6 @@ PlayerImage: str = "☺"
 MazeFilePath: str = "Mazes/"
 MazeFileName: str = "Maze 1"
 Maze = list()
-ObjectsInMaze = ["Statue de Dragon", "Statue de Poisson", "Statue d'Oiseau", "Statue de Buffle", "Miroir", "Clé dorée", "Clé argentée", "Bouteille"]
 # Variables for player character
 PlayerX: int = 0
 PlayerY: int = 0
@@ -83,7 +83,71 @@ def LoadMazeFromFile(FileName: str) -> bool:
     """
 
     # Use global Maze variable
-    global MazeFilePath
+    global Maze
+
+    # try/exception block, 
+    try:
+        # Open file (and automatically close it when finished)
+        with open(MazeFilePath + FileName + ".maz", "r") as MyFile:
+            for Line in MyFile:
+                # Define temporary list to store evry character in a line
+                LineCharacters = list()
+                # For each Character in Line
+                for Character in Line:
+                    # Store Character in LineCharacters list (except new line \n)
+                    if (Character != "\n"):
+                        LineCharacters.append(Character)
+                # Store LineCharacters list in Maze list (2 dimensional list)
+                Maze.append(LineCharacters)
+        return True
+    except OSError:
+        print("Le labyrinthe demandé n'a pas été trouvé !")
+        return False
+
+
+def LoadMazeElementsFromFile(FileName: str) -> bool:
+    """ 
+        Load maze elements from json file and store them into list of dictionaries
+
+        :param arg1: The name of the file
+        :type arg1: string
+
+        :return: 
+            - True if no error
+            - False if an error occured
+        :rtype: boolean
+    """
+
+    data = [{
+        "president": {
+            "name": "Alain",
+            "country": "France"
+        }
+    },
+    {
+        "president": {
+            "name": "Juan",
+            "country": "Spain"
+        }
+    }]
+    with open("data_file.json", "w", encoding="utf-8") as write_file:
+        json.dump(data, write_file, indent=4)
+
+    with open("data_file.json", "r", encoding="utf-8") as json_file:
+        # text = json_file.read()
+        # json_data = json.load(text)
+        json_data = json.load(json_file)
+        print(json_data)
+
+
+    with open(MazeFilePath + FileName + " Elements.json", "r", encoding='utf-8') as json_file:
+        text = json_file.read()
+        json_data = json.load(text)
+        print(json_data)
+
+
+
+    # Use global Maze variable
     global Maze
 
     # try/exception block, 
@@ -333,18 +397,22 @@ SayWelcome()
 
 # 2) Initialize Maze
 
-# Load maze from text file to memory 2 dimensions list
+# Load maze from text file
 if not LoadMazeFromFile(MazeFileName):
     # If maze file not found then stop application
     sys.exit()
+# Load maze elements from json file
+if not LoadMazeElementsFromFile(MazeFileName):
+    # If maze file not found then stop application
+    sys.exit()
+
+# Put objects in random positions
 
 # Place player in maze
 PlacePlayerInMaze()
 
 # Draw maze on screen
 DrawMazeOnScreen()
-
-# Put objects in random positions
 
 # Start game
 StartGame()
