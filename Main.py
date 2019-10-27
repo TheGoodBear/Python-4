@@ -1,4 +1,3 @@
-# My third Python application
 # Maze v1.1
 
 # Imports of modules

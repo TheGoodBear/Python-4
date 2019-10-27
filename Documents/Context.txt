@@ -8,6 +8,7 @@ Améliorer le petit jeu de labyrinthe :
 3) Ajouter un inventaire pour le personnage
 4) Donner au personnage la possibilité de ramasser les objets du labyrinthe
 5) Créer une condition de sortie pour le personnage avec une combinaison d'objets
+6) Fiabiliser certaines parties du code avec des blocs de gestion d'erreur
 
 
 Consignes :
