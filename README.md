@@ -4,6 +4,13 @@
 
     Notions abordées :
 
+    - Spécifications : NA
+
+    - IDE : NA
+
+    - Architecture logicielle :
+        - parsing de fichier
+
     - Données :
         - Sérialisation (JSON)
 
