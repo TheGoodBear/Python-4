@@ -1,6 +1,6 @@
 [
     {
-        "Name": "Ground",
+        "Name": "Sol",
         "Symbol": " ",
         "Image": " ",
         "X": 0,
@@ -10,7 +10,7 @@
     {
         "Name": "Mur",
         "Symbol": "*",
-        "Image": "■",
+        "Image": "▓",
         "X": 0,
         "Y": 0,
         "Behavior": ["Block"]
@@ -18,7 +18,7 @@
     {
         "Name": "Entrée",
         "Symbol": "E",
-        "Image": " ",
+        "Image": "E",
         "X": 0,
         "Y": 0,
         "Behavior": ["Walk"]
@@ -29,7 +29,7 @@
         "Image": "+",
         "X": 0,
         "Y": 0,
-        "Behavior": ["Walk"]
+        "Behavior": ["Block"]
     },
     {
         "Name": "Statue de Dragon",

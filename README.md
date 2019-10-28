@@ -6,7 +6,8 @@
 
     - Spécifications : NA
 
-    - IDE : NA
+    - IDE : 
+        - Débogage : Debug Console
 
     - Architecture logicielle :
         - parsing de fichier
@@ -21,6 +22,9 @@
         - Lecture d'un fichier JSON
         - Dictionnaire {}
         - Gestion des erreurs/exceptions (try/except)
+        - Mot-clé "None"
+        - Paramètres de méthode nommés
+        - Opérateur de comparaison "in"
 
 # Énoncé du sujet
 

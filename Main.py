@@ -1,9 +1,10 @@
 # Maze v1.1
 
-# Imports of modules
-# ------------------
-import sys
+# Modules importation
+# -------------------
+import os
 import json
+import random
 
 
 # Variables (must be declared BEFORE using them)
@@ -12,13 +13,15 @@ import json
 # Variables for player data
 PlayerName: str = ""
 PlayerImage: str = "☺"
-# Variables for maze and objects
+# Variables for maze and maze elements
 MazeFilePath: str = "Mazes/"
 MazeFileName: str = "Maze 1"
 Maze = list()
+MazeElements = list()
 # Variables for player character
 PlayerX: int = 0
 PlayerY: int = 0
+PlayerBackpack = list()
 
 
 # Methods (must be declared BEFORE using them)
@@ -64,7 +67,9 @@ def StartGame():
 
     print(
         "\nTon objectif est de sortir du labyrinthe." + 
-        "\nTu es représenté par {0}, à chaque tour tu peux effectuer l'une des actions suivantes :".format(PlayerImage) + 
+        "\nPour cela il te faudra trouver la sortie et avoir collecté les objets nécessaires à l'ouverture de la porte." + 
+        "\nTu es représenté par {0} et la porte de sortie par {1}.".format(PlayerImage, GetMazeElement("Sortie")["Image"]) + 
+        "\nÀ chaque tour tu peux effectuer l'une des actions suivantes :" + 
         "\nTe déplacer vers le (H)aut, le (B)as, la (G)auche, la (D)roite ou (Q)uitter le jeu (et perdre...)" + 
         "\nBonne chance.")
 
@@ -85,23 +90,33 @@ def LoadMazeFromFile(FileName: str) -> bool:
     # Use global Maze variable
     global Maze
 
-    # try/exception block, 
+    # try/exception block to trap errors
     try:
-        # Open file (and automatically close it when finished)
+        # Open file in read mode (and automatically close it when finished)
         with open(MazeFilePath + FileName + ".maz", "r") as MyFile:
             for Line in MyFile:
-                # Define temporary list to store evry character in a line
+                # Define temporary list to store every character in a line
                 LineCharacters = list()
                 # For each Character in Line
                 for Character in Line:
                     # Store Character in LineCharacters list (except new line \n)
                     if (Character != "\n"):
-                        LineCharacters.append(Character)
+                        # Search in maze elements for matching symbol
+                        CurrentElement = GetMazeElement(Symbol=Character)
+                        if(CurrentElement != None):
+                            # If an element was found, append element's image
+                            LineCharacters.append(CurrentElement["Image"])
+                        else:
+                            # If no element was found append character
+                            LineCharacters.append(Character)
                 # Store LineCharacters list in Maze list (2 dimensional list)
                 Maze.append(LineCharacters)
+
         return True
+
     except OSError:
-        print("Le labyrinthe demandé n'a pas été trouvé !")
+        # If there is an OSError exception
+        print("\nLe labyrinthe demandé n'a pas été trouvé !\n")
         return False
 
 
@@ -118,64 +133,86 @@ def LoadMazeElementsFromFile(FileName: str) -> bool:
         :rtype: boolean
     """
 
-    data = [{
-        "president": {
-            "name": "Alain",
-            "country": "France"
-        }
-    },
-    {
-        "president": {
-            "name": "Juan",
-            "country": "Spain"
-        }
-    }]
-    with open("data_file.json", "w", encoding="utf-8") as write_file:
-        json.dump(data, write_file, indent=4)
+    # Use global Maze variable
+    global MazeElements
 
-    with open("data_file.json", "r", encoding="utf-8") as json_file:
-        # text = json_file.read()
-        # json_data = json.load(text)
-        json_data = json.load(json_file)
-        print(json_data)
+    # try/exception block to trap errors
+    try:
+        # Open JSON file in read mode (and automatically close it when finished)
+        with open(MazeFilePath + FileName + " Elements.json", "r", encoding='utf-8') as MyFile:
+            # Load them into maze elements list of dictionary
+            MazeElements = json.load(MyFile)
+            #print(MazeElements)
 
+        # # Code sample to write to JSON file
+        # # Open JSON file in write mode (and automatically close it when finished)
+        # with open("MazeElements.json", "w", encoding="utf-8") as WriteFile:
+        #     # Write to file using proper ascii encoding (with accents) and indentation
+        #     json.dump(MazeElements, WriteFile, ensure_ascii=False, indent=4)
 
-    with open(MazeFilePath + FileName + " Elements.json", "r", encoding='utf-8') as json_file:
-        text = json_file.read()
-        json_data = json.load(text)
-        print(json_data)
+        return True
+
+    except OSError:
+        # If there is an OSError exception
+        print("\nLes éléments du labyrinthe demandé n'ont pas été trouvés !\n")
+        return False
 
 
+def GetMazeElement(
+    Name: str = "",
+    Symbol: str = "",
+    Image: str = "") -> {}:
+    """ 
+        Return a maze element by its name, symbol or image
+
+        :param arg1: The element name
+        :type arg1: string
+        :param arg2: The element symbol
+        :type arg2: string
+        :param arg3: The element image
+        :type arg3: string
+
+        :return: The element (dictionary of all its properties)
+        :rtype: dictionary
+    """
+
+    # # Alternative syntax with list comprehension
+    # return next((ME for ME in MazeElements if ME["Symbol"] == Symbol), None)
+
+    # Browse all elements to find the matching one
+    for CurrentElement in MazeElements:
+        if(Name != "" and CurrentElement["Name"] == Name):
+            return CurrentElement
+        elif(Symbol != "" and CurrentElement["Symbol"] == Symbol):
+            return CurrentElement
+        elif(Image != "" and CurrentElement["Image"] == Image):
+            return CurrentElement
+
+    # If no element matches, return none (null/nothing)
+    return None
+
+
+def PlaceMazeObjectsAtRandomPositions():
+    """ 
+        Place all objects from dictionary at random positions in maze
+    """
 
     # Use global Maze variable
     global Maze
 
-    # try/exception block, 
-    try:
-        # Open file (and automatically close it when finished)
-        with open(MazeFilePath + FileName, "r") as MyFile:
-            for Line in MyFile:
-                # Define temporary list to store evry character in a line
-                LineCharacters = list()
-                # For each Character in Line
-                for Character in Line:
-                    # Store Character in LineCharacters list (except new line \n)
-                    if (Character != "\n"):
-                        LineCharacters.append(Character)
-                # Store LineCharacters list in Maze list (2 dimensional list)
-                Maze.append(LineCharacters)
-        return True
-    except OSError:
-        print("Le labyrinthe demandé n'a pas été trouvé !")
-        return False
-
-
-def PutMazeObjectsAtRandomPositions():
-    """ 
-        Put all objects from dictionary at random positions in maze
-    """
-    
-    pass
+    # Browse every maze element
+    for CurrentObject in MazeElements:
+        if("Pick" in CurrentObject["Behavior"]):
+            # the current object is pickable
+            # draw random coordinates in maze limits
+            ObjectX: int = random.randint(0, len(Maze)-1)
+            ObjectY: int = random.randint(0, len(Maze[0])-1)
+            while(Maze[ObjectY][ObjectX] != GetMazeElement("Sol")["Image"]):
+                # do it again until random position is ground
+                ObjectX = random.randint(0, len(Maze)-1)
+                ObjectY = random.randint(0, len(Maze[0])-1)
+            # place current object at this position (replace the ground with it)
+            Maze[ObjectY][ObjectX] = CurrentObject["Image"]
 
 
 def DrawMazeOnScreen():
@@ -249,7 +286,7 @@ def PlacePlayerInMaze(
             X = 0
             for Character in Line:
                 # If position contains entrance (E)
-                if (Maze[Y][X] == "E"):
+                if (Maze[Y][X] == GetMazeElement("Entrée")["Image"]):
                     # Save coordinates for player
                     PlayerX = X
                     PlayerY = Y
@@ -278,11 +315,20 @@ def WaitForPlayerAction() -> str:
         :rtype: string
     """
 
+    # Show player backpack content
+    print("\nContenu du sac à dos : ", end="")
+    if (len(PlayerBackpack) == 0):
+        # if backpack is empty (nothing in list)
+        print("vide")
+    else:
+        # if backpack contains at least 1 object (* means every item in list)
+        print(*PlayerBackpack, sep=', ')
+
     # Ask for player input until it is valid
     while True:
         PlayerInput = input("\nQuelle est ta prochaine action ? ")
 
-        # Check if this is a valid action
+        # check if this is a valid action
         # show a message saying what player is doing
         # and return action name if valid
         if (PlayerInput.upper() == "H"):
@@ -332,40 +378,80 @@ def ExecutePlayerAction(PlayerAction: str) -> bool:
     elif (PlayerAction == "MoveRight"):
         PlayerNewX += 1
     elif (PlayerAction == "QuitGame"):
-        # If action is QuitGame the return game end
+        # If action is QuitGame then return game end
         return True
 
 
-    # Check if new coordinates are valid (into maze limits and no obstacle)
-    # or if exit is reached
+    # Check if new coordinates are valid (into maze limits)
     if (PlayerNewX<0 or 
         PlayerNewX>len(Maze[0]) or 
         PlayerNewY<0 or 
         PlayerNewY>len(Maze)):
-        # If player is out of maze limits
+        # if player is out of maze limits
         print("Tu es en dehors des limites, tu ne peux pas aller par là !")
-        # and redraw maze with new player position
+        # redraw maze
         DrawMazeOnScreen()
         return False
-    elif (Maze[PlayerNewY][PlayerNewX] == "*"):
+
+    # Get current maze element at new player coordinates
+    CurrentElement = GetMazeElement(Image=Maze[PlayerNewY][PlayerNewX])
+
+    # Check current element behavior or name
+    if (CurrentElement["Name"] == "Sortie"):
+        # If exit is reached
+        # check if player has all needed objects
+        MissingObjects: int = 0
+        # for each element in maze
+        for Element in MazeElements:
+            if ("Combine" in Element["Behavior"]
+                and not Element["Name"] in PlayerBackpack):
+                # this element can be combined but is not in player backpack
+                MissingObjects += 1
+        if (MissingObjects == 0):
+            # player has all objects
+            # replace player in maze
+            PlacePlayerInMaze(PlayerNewX,PlayerNewY)
+            # assign new coordinates to player
+            PlayerX = PlayerNewX
+            PlayerY = PlayerNewY
+            # redraw maze with new player position
+            DrawMazeOnScreen()
+            # say victory
+            print(
+                "\nOuiiii, bravo {0}, tu as trouvé la sortie et tu avais tous les objets nécessaires !\n"
+                .format(PlayerName))
+            # and return game end
+            return True
+        else:
+            # some objects are missing
+            # say how many
+            print(
+                "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
+                .format(MissingObjects))
+    
+    elif ("Block" in CurrentElement["Behavior"]):
         # If there is an obstacle, say it
         print("Oups un mur, tu ne peux pas bouger !")
-        # and redraw maze with new player position
+        # and redraw maze
         DrawMazeOnScreen()
-        return False
-    elif (Maze[PlayerNewY][PlayerNewX] == "X"):
-        # If exit is reached
+    
+    elif ("Pick" in CurrentElement["Behavior"]):
+        # If there is an object, put it in backpack
+        PlayerBackpack.append(CurrentElement["Name"])
+        # say it
+        print(
+            "Chouette, tu as trouvé un(e) {0}\n"
+            .format(CurrentElement["Name"]))
+        # remove it from maze (put ground at its place)
+        Maze[PlayerNewY][PlayerNewX] = GetMazeElement("Sol")["Image"]
         # replace player in maze
         PlacePlayerInMaze(PlayerNewX,PlayerNewY)
         # assign new coordinates to player
         PlayerX = PlayerNewX
         PlayerY = PlayerNewY
-        # redraw maze with new player position
+        # and redraw maze with new player position
         DrawMazeOnScreen()
-        # say victory
-        print("Ouiiii, bravo {0}, tu as trouvé la sortie !\n".format(PlayerName))
-        # and return game end
-        return True
+        
     else:
         # If nothing special
         # replace player in maze
@@ -375,7 +461,9 @@ def ExecutePlayerAction(PlayerAction: str) -> bool:
         PlayerY = PlayerNewY
         # and redraw maze with new player position
         DrawMazeOnScreen()
-        return False
+
+    # Game is not yet ended    
+    return False
 
 
 # Application
@@ -397,16 +485,17 @@ SayWelcome()
 
 # 2) Initialize Maze
 
-# Load maze from text file
-if not LoadMazeFromFile(MazeFileName):
-    # If maze file not found then stop application
-    sys.exit()
 # Load maze elements from json file
 if not LoadMazeElementsFromFile(MazeFileName):
     # If maze file not found then stop application
-    sys.exit()
+    os._exit(1)
+# Load maze from text file
+if not LoadMazeFromFile(MazeFileName):
+    # If maze file not found then stop application
+    os.exit(1)
 
 # Put objects in random positions
+PlaceMazeObjectsAtRandomPositions()
 
 # Place player in maze
 PlacePlayerInMaze()
