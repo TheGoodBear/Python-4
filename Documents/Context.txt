@@ -3,17 +3,19 @@ Contexte
 
 Améliorer le petit jeu de labyrinthe :
 
-1) Ajouter des objets à trouver dans le labyrinthe
+1) Ajouter un fichier extérieur définissant les éléments du labyrinthe
+2) Ajouter des objets à trouver dans le labyrinthe
 2) Placer les objets aléatoirement dans le labyrinthe en début de partie
-3) Ajouter un inventaire pour le personnage
+3) Ajouter un sac à dos pour le personnage
 4) Donner au personnage la possibilité de ramasser les objets du labyrinthe
 5) Créer une condition de sortie pour le personnage avec une combinaison d'objets
 6) Fiabiliser certaines parties du code avec des blocs de gestion d'erreur
-7) Permettre d'ajouter des commentaires (#)  et des lignes blanches dans les fichiers de labyrinthe et les fichiers d'éléments
-
+7) Permettre d'ajouter des commentaires (#) et des lignes blanches dans les fichiers de labyrinthe
+8) Permettre de remplacer les symboles du fichier .maz par d'autres
 
 Consignes :
 - Tous les nommages (méthodes, propriétés, variables, classes, etc.) doivent être en anglais
 - Le code doit être commenté et aéré (lignes blanches)
 - L'application doit utiliser des fonctions (def)
 - Chaque action effectuée par l'application doit afficher un message explicite à l'utilisateur
+- Le programme principal ne doit contenir que des appels à des fonctions et une boucle de jeu (while)

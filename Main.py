@@ -12,7 +12,7 @@ import random
 
 # Variables for player data
 PlayerName: str = ""
-PlayerImage: str = "☺"
+PlayerImage: str = "☻" # alt+2
 # Variables for maze and maze elements
 MazeFilePath: str = "Mazes/"
 MazeFileName: str = "Maze 1"
@@ -43,8 +43,11 @@ def GetPlayerData() -> str:
         :rtype: string
     """
 
-    # Ask for names if they are empty
-    Name = input("\nMerci d'entrer ton nom : ")
+    Name: str = ""
+
+    # Ask for name until it is filled
+    while(Name == ""):
+        Name = input("\nMerci d'entrer ton nom : ")
 
     # Return Name
     return Name
@@ -74,17 +77,12 @@ def StartGame():
         "\nBonne chance.")
 
 
-def LoadMazeFromFile(FileName: str) -> bool:
+def LoadMazeFromFile(FileName: str):
     """ 
         Load maze from text file and store it into a 2 dimensional list
 
         :param arg1: The name of the file
         :type arg1: string
-
-        :return: 
-            - True if no error
-            - False if an error occured
-        :rtype: boolean
     """
 
     # Use global Maze variable
@@ -95,6 +93,9 @@ def LoadMazeFromFile(FileName: str) -> bool:
         # Open file in read mode (and automatically close it when finished)
         with open(MazeFilePath + FileName + ".maz", "r") as MyFile:
             for Line in MyFile:
+                # Ignore blank lines and comments
+                if(Line[0] == "\n" or Line[0] == "#"):
+                    continue
                 # Define temporary list to store every character in a line
                 LineCharacters = list()
                 # For each Character in Line
@@ -112,25 +113,19 @@ def LoadMazeFromFile(FileName: str) -> bool:
                 # Store LineCharacters list in Maze list (2 dimensional list)
                 Maze.append(LineCharacters)
 
-        return True
-
     except OSError:
         # If there is an OSError exception
         print("\nLe labyrinthe demandé n'a pas été trouvé !\n")
-        return False
+        # exit application
+        os._exit(1)
 
 
-def LoadMazeElementsFromFile(FileName: str) -> bool:
+def LoadMazeElementsFromFile(FileName: str):
     """ 
         Load maze elements from json file and store them into list of dictionaries
 
         :param arg1: The name of the file
         :type arg1: string
-
-        :return: 
-            - True if no error
-            - False if an error occured
-        :rtype: boolean
     """
 
     # Use global Maze variable
@@ -150,12 +145,11 @@ def LoadMazeElementsFromFile(FileName: str) -> bool:
         #     # Write to file using proper ascii encoding (with accents) and indentation
         #     json.dump(MazeElements, WriteFile, ensure_ascii=False, indent=4)
 
-        return True
-
     except OSError:
         # If there is an OSError exception
         print("\nLes éléments du labyrinthe demandé n'ont pas été trouvés !\n")
-        return False
+        # exit application
+        os._exit(1)
 
 
 def GetMazeElement(
@@ -220,9 +214,6 @@ def DrawMazeOnScreen():
         Draw maze in console
         Including player
     """
-
-    # Use global Maze variable
-    global Maze
 
     # Prints a blank line
     print()
@@ -301,8 +292,8 @@ def PlacePlayerInMaze(
 
     else:
         # Player is already in maze
-        # replace actual player position with an empty space
-        Maze[PlayerY][PlayerX] = " "
+        # replace actual player position with a floor
+        Maze[PlayerY][PlayerX] = GetMazeElement("Sol")["Image"]
         # and place player to new position
         Maze[PlayerNewY][PlayerNewX] = PlayerImage
 
@@ -324,7 +315,7 @@ def WaitForPlayerAction() -> str:
         # if backpack contains at least 1 object (* means every item in list)
         print(*PlayerBackpack, sep=', ')
 
-    # Ask for player input until it is valid
+    # Ask player input until it is a valid action
     while True:
         PlayerInput = input("\nQuelle est ta prochaine action ? ")
 
@@ -442,7 +433,7 @@ def ExecutePlayerAction(PlayerAction: str) -> bool:
         print(
             "Chouette, tu as trouvé un(e) {0}\n"
             .format(CurrentElement["Name"]))
-        # remove it from maze (put ground at its place)
+        # remove it from maze (put floor at its place)
         Maze[PlayerNewY][PlayerNewX] = GetMazeElement("Sol")["Image"]
         # replace player in maze
         PlacePlayerInMaze(PlayerNewX,PlayerNewY)
@@ -474,10 +465,8 @@ def ExecutePlayerAction(PlayerAction: str) -> bool:
 # Application start
 ApplicationStart()
 
-# While player name is empty
-while (PlayerName == ""):
-    # Ask for name
-    PlayerName = GetPlayerData()
+# Ask for player data
+PlayerName = GetPlayerData()
 
 # Say welcome
 SayWelcome()
@@ -486,13 +475,9 @@ SayWelcome()
 # 2) Initialize Maze
 
 # Load maze elements from json file
-if not LoadMazeElementsFromFile(MazeFileName):
-    # If maze file not found then stop application
-    os._exit(1)
+LoadMazeElementsFromFile(MazeFileName)
 # Load maze from text file
-if not LoadMazeFromFile(MazeFileName):
-    # If maze file not found then stop application
-    os.exit(1)
+LoadMazeFromFile(MazeFileName)
 
 # Put objects in random positions
 PlaceMazeObjectsAtRandomPositions()
@@ -512,7 +497,7 @@ StartGame()
 # Variable for end of game
 EndOfGame: bool = False
 
-# Do this code until end of game is triggered
+# Do this until end of game is triggered
 while not EndOfGame:
 
     # Wait for a player action

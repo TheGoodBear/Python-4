@@ -13,7 +13,7 @@
         - parsing de fichier
 
     - Données :
-        - Sérialisation (JSON)
+        - Sérialisation (JSON, XML)
 
     - Langage :
         - Modules (random, json)
@@ -22,9 +22,10 @@
         - Lecture d'un fichier JSON
         - Dictionnaire {}
         - Gestion des erreurs/exceptions (try/except)
-        - Mot-clé "None"
+        - Mot-clé : None
         - Paramètres de méthode nommés
-        - Opérateur de comparaison "in"
+        - Opérateur de comparaison : in
+        - Mot-clés : continue, break
 
 # Énoncé du sujet
 
