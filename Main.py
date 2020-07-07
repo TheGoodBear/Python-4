@@ -459,49 +459,50 @@ def ExecutePlayerAction(PlayerAction: str) -> bool:
 
 # Application
 # -----------
+if __name__ == "__main__":
 
-# 1) Show initial message and get player data
+    # 1) Show initial message and get player data
 
-# Application start
-ApplicationStart()
+    # Application start
+    ApplicationStart()
 
-# Ask for player data
-PlayerName = GetPlayerData()
+    # Ask for player data
+    PlayerName = GetPlayerData()
 
-# Say welcome
-SayWelcome()
-
-
-# 2) Initialize Maze
-
-# Load maze elements from json file
-LoadMazeElementsFromFile(MazeFileName)
-# Load maze from text file
-LoadMazeFromFile(MazeFileName)
-
-# Put objects in random positions
-PlaceMazeObjectsAtRandomPositions()
-
-# Place player in maze
-PlacePlayerInMaze()
-
-# Draw maze on screen
-DrawMazeOnScreen()
-
-# Start game
-StartGame()
+    # Say welcome
+    SayWelcome()
 
 
-# 3) Game loop
+    # 2) Initialize Maze
 
-# Variable for end of game
-EndOfGame: bool = False
+    # Load maze elements from json file
+    LoadMazeElementsFromFile(MazeFileName)
+    # Load maze from text file
+    LoadMazeFromFile(MazeFileName)
 
-# Do this until end of game is triggered
-while not EndOfGame:
+    # Put objects in random positions
+    PlaceMazeObjectsAtRandomPositions()
 
-    # Wait for a player action
-    PlayerAction: str = WaitForPlayerAction()
+    # Place player in maze
+    PlacePlayerInMaze()
 
-    # Do action
-    EndOfGame = ExecutePlayerAction(PlayerAction)
+    # Draw maze on screen
+    DrawMazeOnScreen()
+
+    # Start game
+    StartGame()
+
+
+    # 3) Game loop
+
+    # Variable for end of game
+    EndOfGame: bool = False
+
+    # Do this until end of game is triggered
+    while not EndOfGame:
+
+        # Wait for a player action
+        PlayerAction: str = WaitForPlayerAction()
+
+        # Do action
+        EndOfGame = ExecutePlayerAction(PlayerAction)
